@@ -44,7 +44,7 @@ public class Pacs008Validator implements IValidator {
          String result = null;
         for (HashMap<String, String> s: schemas) {
             String message = s.get("Message");
-            if (message.equals("800108.0"))
+            if (message.equals("00800108.0"))
                 result = s.get("FileName");
         }
         log.info(result);

@@ -7,14 +7,8 @@ package rapide.iso20022.message.generators.fieldrandomizer;
 import com.prowidesoftware.swift.model.mx.dic.*;
 import rapide.iso20022.util.StringUtils;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class RegulatoryReporting3Random {
     private static Map<String, String> regulatoryAuthorities = Map.of(
@@ -63,31 +57,27 @@ public class RegulatoryReporting3Random {
         int idx = (int)(Math.random() * indiaFXCode.length);
 
         RegulatoryReporting3 regulatoryReporting3 = new RegulatoryReporting3();
-        try {
-            if (isToCountry) {
-                regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.CRED)
-                        .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get("IN"))
-                                .setCtry("IN")).addDtls(new StructuredRegulatoryReporting3()
-                                .setTp("Export Reporting")
-                                .setDt(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()))
-                                .setCtry("IN")
-                                .setCd(indiaFXCode[idx])
-                                .setAmt(currencyAndAmount)
-                        );
-            } else {
-                // outbound transfer
-                regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.DEBT)
-                        .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get("IN"))
-                                .setCtry("IN")).addDtls(new StructuredRegulatoryReporting3()
-                                .setTp("Import Reporting")
-                                .setDt(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()))
-                                .setCtry("IN")
-                                .setCd(indiaFXCode[idx])
-                                .setAmt(currencyAndAmount)
-                        );
-            }
-        } catch (DatatypeConfigurationException e) {
-            throw new RuntimeException(e);
+        if (isToCountry) {
+            regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.CRED)
+                    .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get("IN"))
+                            .setCtry("IN")).addDtls(new StructuredRegulatoryReporting3()
+                            .setTp("Export Reporting")
+                            .setDt(LocalDate.now())
+                            .setCtry("IN")
+                            .setCd(indiaFXCode[idx])
+                            .setAmt(currencyAndAmount)
+                    );
+        } else {
+            // outbound transfer
+            regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.DEBT)
+                    .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get("IN"))
+                            .setCtry("IN")).addDtls(new StructuredRegulatoryReporting3()
+                            .setTp("Import Reporting")
+                            .setDt(LocalDate.now())
+                            .setCtry("IN")
+                            .setCd(indiaFXCode[idx])
+                            .setAmt(currencyAndAmount)
+                    );
         }
 
         return regulatoryReporting3;
@@ -100,31 +90,27 @@ public class RegulatoryReporting3Random {
         int idxTp = (int)(Math.random() * regulatoryTps.length);
         RegulatoryReporting3 regulatoryReporting3 = new RegulatoryReporting3();
 
-        try {
-            if (isToCountry) {
-                regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.CRED)
-                        .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get(countryCode))
-                                .setCtry(countryCode)).addDtls(new StructuredRegulatoryReporting3()
-                                .setTp(regulatoryTps[idxTp])
-                                .setDt(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()))
-                                .setCtry(countryCode)
-                                .setCd(regulatoryCodes[idx])
-                                .setAmt(currencyAndAmount)
-                        );
-            } else {
-                // outbound transfer from the country
-                regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.DEBT)
-                        .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get(countryCode))
-                                .setCtry(countryCode)).addDtls(new StructuredRegulatoryReporting3()
-                                .setTp(regulatoryTps[idxTp])
-                                .setDt(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()))
-                                .setCtry(countryCode)
-                                .setCd(regulatoryCodes[idx])
-                                .setAmt(currencyAndAmount)
-                        );
-            }
-        } catch (DatatypeConfigurationException e) {
-            throw new RuntimeException(e);
+        if (isToCountry) {
+            regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.CRED)
+                    .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get(countryCode))
+                            .setCtry(countryCode)).addDtls(new StructuredRegulatoryReporting3()
+                            .setTp(regulatoryTps[idxTp])
+                            .setDt(LocalDate.now())
+                            .setCtry(countryCode)
+                            .setCd(regulatoryCodes[idx])
+                            .setAmt(currencyAndAmount)
+                    );
+        } else {
+            // outbound transfer from the country
+            regulatoryReporting3.setDbtCdtRptgInd(RegulatoryReportingType1Code.DEBT)
+                    .setAuthrty(new RegulatoryAuthority2().setNm(regulatoryAuthorities.get(countryCode))
+                            .setCtry(countryCode)).addDtls(new StructuredRegulatoryReporting3()
+                            .setTp(regulatoryTps[idxTp])
+                            .setDt(LocalDate.now())
+                            .setCtry(countryCode)
+                            .setCd(regulatoryCodes[idx])
+                            .setAmt(currencyAndAmount)
+                    );
         }
 
         return regulatoryReporting3;

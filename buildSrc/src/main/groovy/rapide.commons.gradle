@@ -7,8 +7,8 @@ group = 'rapide.iso20022'
 version = '1.0'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -19,15 +19,17 @@ configurations {
 
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'com.google.guava:guava:30.0-jre'
-    implementation 'com.prowidesoftware:pw-iso20022:SRU2020-9.1.6'
+    implementation ('com.prowidesoftware:pw-iso20022:SRU2023-10.1.4') {
+        exclude group: "com.sun.xml.bind"
+    }
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
