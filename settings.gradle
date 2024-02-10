@@ -11,6 +11,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'iso20022-message-generator'
+rootProject.name = 'ms-iso20022-message-generator'
 
 include('pacs008')
