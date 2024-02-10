@@ -14,9 +14,8 @@ import rapide.iso20022.data.lei.repository.LegalEntityRepository;
 import rapide.iso20022.message.generators.fieldrandomizer.*;
 import rapide.iso20022.message.generators.fieldrandomizer.Helper;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.security.SecureRandom;
+import java.time.OffsetDateTime;
 
 @Slf4j
 public class Pacs008Message {
@@ -29,7 +28,7 @@ public class Pacs008Message {
     private ConfigProperties configProperties;
 
     private String messageId, uuid;
-    private XMLGregorianCalendar messageTimestamp;
+    private OffsetDateTime messageTimestamp;
     private BranchAndFinancialInstitutionIdentification6 instructingAgentFrom;
     private BranchAndFinancialInstitutionIdentification6 instructedAgentTo;
 
@@ -38,21 +37,21 @@ public class Pacs008Message {
     }
 
     public MxPacs00800108 generateRandomMessage(LegalEntityRepository legalEntityRepository,
-                                                BICRepository bicRepository, ConfigProperties configProperties) throws DatatypeConfigurationException {
+                                                BICRepository bicRepository, ConfigProperties configProperties) {
         this.bicRepository = bicRepository;
         this.legalEntityRepository = legalEntityRepository;
         this.configProperties = configProperties;
         //Generate data that will be used for other messages/parts
         this.messageId = Helper.getRandomAlphaNumeric(16);
         this.uuid = Helper.getUUIDv4();
-        this.messageTimestamp = Helper.getXMLGregorianCalendarNow();
+        this.messageTimestamp = OffsetDateTime.now();
 
         this.generateMessageDocument();
         this.generateMessageHeader();
         return message;
     }
 
-    public void generateMessageDocument() throws DatatypeConfigurationException {
+    public void generateMessageDocument() {
         FIToFICustomerCreditTransferV08 customerTransferParam = new FIToFICustomerCreditTransferV08();
         customerTransferParam.addCdtTrfTxInf(generateTransactionInfo());
         customerTransferParam.setGrpHdr(generateGroupHeader());
@@ -70,7 +69,7 @@ public class Pacs008Message {
         this.message.setAppHdr(headerParam);
     }
 
-    public CreditTransferTransaction39 generateTransactionInfo() throws DatatypeConfigurationException {
+    public CreditTransferTransaction39 generateTransactionInfo() {
         CreditTransferTransaction39 transactionInfo =  new CreditTransferTransaction39();
         instructingAgentFrom = BranchAndFinancialInstitutionIdentification6Random
             .getBranchAndFinancialInstitutionIdentification(bicRepository, configProperties.getSourceBicList());
@@ -146,7 +145,7 @@ public class Pacs008Message {
         ActiveCurrencyAndAmount randomSettleAmount =
                 ActiveCurrencyAndAmountRandom.getActiveCurrencyAndAmount(configProperties, fromCountryCode);
         transactionInfo.setIntrBkSttlmAmt(randomSettleAmount);
-        transactionInfo.setIntrBkSttlmDt(this.messageTimestamp);
+        transactionInfo.setIntrBkSttlmDt(this.messageTimestamp.toLocalDate());
         ActiveOrHistoricCurrencyAndAmount instdCurrencyAndAmount =
                 ActiveOrHistoricCurrencyAndAmountRandom
                         .getActiveOrHistoricCurrencyAndAmount(randomSettleAmount.getValue(), randomSettleAmount.getCcy());

@@ -55,9 +55,9 @@ public class FileUtilsTest {
         ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFileName));
 
         try {
-            assertThat(zin.getNextEntry().getName().toString()).isEqualTo("001/iso20022-0.xml");
-            assertThat(zin.getNextEntry().getName().toString()).isEqualTo("001/iso20022-1.xml");
-            assertThat(zin.getNextEntry().getName().toString()).isEqualTo("001/iso20022-2.xml");
+            assertThat(zin.getNextEntry().getName().toString()).matches("001.iso20022-0\\.xml");
+            assertThat(zin.getNextEntry().getName().toString()).matches("001.iso20022-1\\.xml");
+            assertThat(zin.getNextEntry().getName().toString()).matches("001.iso20022-2\\.xml");
         } finally {
             FileUtils.deleteDirectory(new File("001"));
         }

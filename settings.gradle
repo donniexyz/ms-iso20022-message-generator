@@ -5,6 +5,7 @@
 // Define locations for components
 dependencyResolutionManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
         mavenCentral()
     }
