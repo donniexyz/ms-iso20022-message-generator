@@ -75,7 +75,7 @@ rapide:
     - Country: TH
       Code: THB
   ValidationSchema:
-    - Message: 00800108.0
+    - Message: "00800108.0"
       FileName: CBPRPlus_pacs_008_001_08_20210413_0914.xsd
   InvalidMessageRetry: 10
 #  SourceBicList:
